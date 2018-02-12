@@ -53,9 +53,9 @@ attributes = [
 ]
 
 for i in attributes:
-    print(i)
-    print("{0} {1} {2}".format([
+    print("| {0}: {1} | Mod: {2} | Check: {3} |".format(
         i['name'],
+        i['attr'],
         CalcAttrMod(i['attr']),
         CalcAttrCheck(i['attr'])
-    ]))
+    ))
