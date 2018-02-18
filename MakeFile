@@ -1,0 +1,10 @@
+.PHONY: run-tests flake
+
+all:
+	@echo "usage: make (run-tests|flake)"
+
+flake:
+	flake8 . --exclude .env
+
+run-tests:
+	coverage run -m unittest discover && coverage html
