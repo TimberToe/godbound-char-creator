@@ -1,17 +1,44 @@
 """The different functions."""
 
+import math
 import random
 
 
-def print_attributes(attributes):
-    """Print attributes for character."""
-    for i in attributes:
+def print_character(data):
+    """Print the character sheet"""
+
+    print()
+    print('Name: ' + data['name'])
+
+    print()
+    print("-- Attributes --")
+    for key, value in data['attributes'].items():
         print("| {:14s} {:2} | Mod: {:2} | Check: {:2} |".format(
-            i['name'] + ':',
-            i['attr'],
-            calc_attr_mod(i['attr']),
-            calc_attr_check(i['attr'])
+            key.capitalize() + ':',
+            value,
+            calc_attr_mod(value),
+            calc_attr_check(value)
         ))
+
+    print()
+    print("-- Saving throws --")
+    for key, value in data['saving_throws'].items():
+        print("| {:14s} {:2} |".format(key.capitalize(), value))
+
+    print()
+    print("-- Facts --")
+    for fact in data['facts']:
+        print(fact)
+    return ''
+
+
+def set_facts(level):
+    facts = []
+    num_facts = 2 + level
+    print("You need to set {0} facts:".format(num_facts))
+    for i in range(0, num_facts):
+        facts.append(input(": "))
+    return facts
 
 
 def roll_stats():
@@ -71,5 +98,80 @@ def calc_attr_mod(attr):
 
 
 def calc_attr_check(attr):
-    """Calculate Check by subtracting the attribute score from 21."""
+    """Calculate Checks."""
     return 21 - attr
+
+
+def calc_saving_throw(attr, level):
+    """Calculate individual Saving Throw."""
+    return (15 - calc_attr_mod(attr)) - (level - 1)
+
+
+def calc_all_throws(attributes, level):
+    """Calculate Saving Throws."""
+    hardiness = calc_saving_throw(
+        max(attributes['strength'], attributes['constitution']),
+        level
+    )
+    evasion = calc_saving_throw(
+        max(attributes['dexterity'], attributes['intelligence']),
+        level
+    )
+    spirit = calc_saving_throw(
+        max(attributes['wisdom'], attributes['charisma']),
+        level
+    )
+    return {'hardiness': hardiness, 'evasion': evasion, 'spirit': spirit}
+
+
+def calc_hp(con, level):
+    """Calculate hitpoints."""
+    base_hp = 8 + calc_attr_mod(con)
+    level_hp = 4 + math.ceil(calc_attr_mod(con)/2)
+    return base_hp + (level_hp * (level - 1))
+
+
+def max_pp(level):
+    base_pp = 6
+    level_pp = 2 * level
+    return base_pp + (level_pp - 2)
+
+
+def calc_ac(armor, shield, dex):
+    return 9 - (armor + shield + calc_attr_mod(dex))
+
+
+def calc_ac_floryd(armor, shield, dex):
+    return 14 + (armor + shield + calc_attr_mod(dex))
+
+
+def calc_tohit(attr, level):
+    return level + calc_attr_mod(attr)
+
+
+def calc_base_eff_and_infl(level):
+    return 2 + (level - 1)
+
+
+def calc_level(xp, dominion):
+    pass
+
+
+def choose_armor():
+    """
+    Example:
+
+    Choose your armor:
+    (1) Heavy
+    (2) Medium
+    (3) Light
+    : 1
+
+    Choose 2 saving throws that are impacted:
+    (1) Hardiness
+    (2) Evasion
+    (3) spirit
+    Choose the first one: 1
+    Choose the second one: 2
+    """
+    pass
