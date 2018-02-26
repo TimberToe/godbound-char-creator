@@ -1,3 +1,5 @@
+"""The character data structure."""
+
 char_data = {
     'name': '',
     'hp': 8,

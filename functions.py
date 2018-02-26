@@ -5,8 +5,7 @@ import random
 
 
 def print_character(data):
-    """Print the character sheet"""
-
+    """Print the character sheet."""
     print()
     print('Name: ' + data['name'])
 
@@ -33,6 +32,7 @@ def print_character(data):
 
 
 def set_facts(level):
+    """Input function for facts."""
     facts = []
     num_facts = 2 + level
     print("You need to set {0} facts:".format(num_facts))
@@ -132,33 +132,40 @@ def calc_hp(con, level):
 
 
 def max_pp(level):
+    """Calculate the max possible power points."""
     base_pp = 6
     level_pp = 2 * level
     return base_pp + (level_pp - 2)
 
 
 def calc_ac(armor, shield, dex):
+    """Calculate AC."""
     return 9 - (armor + shield + calc_attr_mod(dex))
 
 
 def calc_ac_floryd(armor, shield, dex):
+    """Calculate AC, Flory style."""
     return 14 + (armor + shield + calc_attr_mod(dex))
 
 
 def calc_tohit(attr, level):
+    """Calculate to hit, depending on attribute."""
     return level + calc_attr_mod(attr)
 
 
 def calc_base_eff_and_infl(level):
+    """Calculate base Effort and Influence."""
     return 2 + (level - 1)
 
 
 def calc_level(xp, dominion):
+    """Calculate what level you should be depending on xp and dominion."""
     pass
 
 
 def choose_armor():
-    """
+    """Input function for choosing armor.
+
     Example:
 
     Choose your armor:
@@ -174,4 +181,4 @@ def choose_armor():
     Choose the first one: 1
     Choose the second one: 2
     """
-    pass
+    return 'ARMOR!'
