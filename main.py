@@ -6,6 +6,9 @@ import functions as func
 
 def main():
     """Start the Application."""
+    # Set level
+    level = func.set_level()
+    char_data['level'] = level
 
     # Set name
     char_data['name'] = input("Choose a name: ")
@@ -23,8 +26,6 @@ def main():
     else:
         print('Invalid choice, defaults to "Set"')
         set_stat = func.set_stats()
-
-    level = char_data['level']
 
     # Set attributes
     temp = {}

@@ -159,8 +159,49 @@ def calc_base_eff_and_infl(level):
 
 
 def calc_level(xp, dominion):
-    """Calculate what level you should be depending on xp and dominion."""
-    pass
+    """Calculate level depending on xp and dominion."""
+    if xp < 3:
+        xp_potential = 1
+    if xp >= 3 and xp < 6:
+        xp_potential = 2
+    if xp >= 6 and xp < 12:
+        xp_potential = 3
+    if xp >= 12 and xp < 24:
+        xp_potential = 4
+    if xp >= 24 and xp < 48:
+        xp_potential = 5
+    if xp >= 48 and xp < 72:
+        xp_potential = 6
+    if xp >= 72 and xp < 96:
+        xp_potential = 7
+    if xp >= 96 and xp < 130:
+        xp_potential = 8
+    if xp >= 130 and xp < 170:
+        xp_potential = 9
+    if xp >= 170:
+        xp_potential = 10
+    if dominion < 2:
+        dom_potential = 1
+    if dominion >= 2 and dominion < 4:
+        dom_potential = 2
+    if dominion >= 4 and dominion < 10:
+        dom_potential = 3
+    if dominion >= 10 and dominion < 22:
+        dom_potential = 4
+    if dominion >= 22 and dominion < 38:
+        dom_potential = 5
+    if dominion >= 38 and dominion < 57:
+        dom_potential = 6
+    if dominion >= 57 and dominion < 76:
+        dom_potential = 7
+    if dominion >= 76 and dominion < 95:
+        dom_potential = 8
+    if dominion >= 95 and dominion < 124:
+        dom_potential = 9
+    if dominion >= 124:
+        dom_potential = 10
+
+    return min(xp_potential, dom_potential)
 
 
 def choose_armor():
@@ -182,3 +223,24 @@ def choose_armor():
     Choose the second one: 2
     """
     return 'ARMOR!'
+
+
+def set_xpdom():
+    """Input XP and Dominion."""
+    xp = input("How much xp do you have?")
+    dominion = input("How much dominion do you have?")
+    return xp, dominion
+
+
+def set_level():
+    """Input starting level."""
+    test = True
+    while(test):
+        test = False
+        try:
+            level = int(input("What is your starting level? "))
+        except ValueError:
+            print("Enter a valid integer")
+            test = True
+
+    return level
