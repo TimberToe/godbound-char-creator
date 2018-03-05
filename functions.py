@@ -1,7 +1,24 @@
 """The different functions."""
 
 import math
+import os
+import platform
 import random
+from sys import stdin
+
+
+def clear():
+    """Clear the console."""
+    if platform.system == 'Windows':
+        os.system('cls')
+    else:
+        os.system('clear')
+
+
+def _input(str=''):
+    """Input that uses readline."""
+    print(str, end='', flush=True)
+    return stdin.readline().rstrip('\n')
 
 
 def print_character(data):
@@ -28,7 +45,58 @@ def print_character(data):
     print("-- Facts --")
     for fact in data['facts']:
         print(fact)
-    return ''
+
+    print()
+    print("-- AC --")
+    print('AC', data['ac'])
+    print()
+    print("-- Armor --")
+    print('Type: {}'.format(data['armor']['type']))
+    print('Affects AC: {}'.format(data['armor']['ac_mod']))
+    print('Affects saving throws:')
+    for saving_throw in data['armor']['sv_throws']:
+        print('{}'.format(saving_throw))
+
+
+def choose_word():
+    """
+    Chose the words for your character.
+
+    You are to choose 3 Words:
+      (1) Earth
+      (2) Bow
+      (3) Artifice
+
+    You can use the following commands:
+     - inspect X
+     - choose X
+    : inspect 1
+
+    Bow:
+    -------
+    This word is cooool!
+    Lorem ipsum...
+
+    Gifts:
+    ------
+    (1) Bar the Red descent (Lesser)
+    (2) Rain of Sorrow (Greater)
+
+    You can use the following commands:
+     - inspect X
+     - back
+    : inspect 1
+
+    Bar the Red descent    On Turn
+    ------------------------------
+    Description
+    Lorem ipsum
+
+    You can use the following commands:
+     - back
+    :
+    """
+    pass
 
 
 def set_facts(level):
@@ -37,7 +105,7 @@ def set_facts(level):
     num_facts = 2 + level
     print("You need to set {0} facts:".format(num_facts))
     for i in range(0, num_facts):
-        facts.append(input(": "))
+        facts.append(_input(": "))
     return facts
 
 
@@ -64,7 +132,7 @@ def set_stats(score_set=[16, 15, 13, 10, 9, 8]):
     for test in attributes:
         answer = 0
         while int(answer) not in score_set:
-            answer = input("What is your " + test + "? ")
+            answer = _input("What is your " + test + "? ")
             if int(answer) not in score_set:
                 print("Invalid choice!")
         print("Good choice!")
@@ -107,20 +175,29 @@ def calc_saving_throw(attr, level):
     return (15 - calc_attr_mod(attr)) - (level - 1)
 
 
-def calc_all_throws(attributes, level):
+def calc_all_throws(attributes, level, armor):
     """Calculate Saving Throws."""
     hardiness = calc_saving_throw(
         max(attributes['strength'], attributes['constitution']),
         level
     )
+    if 'hardiness' in armor['sv_throws']:
+        hardiness -= 4
+
     evasion = calc_saving_throw(
         max(attributes['dexterity'], attributes['intelligence']),
         level
     )
+    if 'evasion' in armor['sv_throws']:
+        evasion -= 4
+
     spirit = calc_saving_throw(
         max(attributes['wisdom'], attributes['charisma']),
         level
     )
+    if 'spirit' in armor['sv_throws']:
+        spirit -= 4
+
     return {'hardiness': hardiness, 'evasion': evasion, 'spirit': spirit}
 
 
@@ -200,35 +277,61 @@ def calc_level(xp, dominion):
         dom_potential = 9
     if dominion >= 124:
         dom_potential = 10
-
     return min(xp_potential, dom_potential)
 
 
 def choose_armor():
-    """Input function for choosing armor.
-
-    Example:
-
+    """Input function for choosing armor."""
+    a = input("""
     Choose your armor:
     (1) Heavy
     (2) Medium
     (3) Light
-    : 1
+    """)
 
-    Choose 2 saving throws that are impacted:
-    (1) Hardiness
-    (2) Evasion
-    (3) spirit
-    Choose the first one: 1
-    Choose the second one: 2
-    """
-    return 'ARMOR!'
+    saving_throws = ['Evasion', 'Hardiness', 'Spirit']
+    if int(a) == 1:
+        print("You chose Heavy!")
+        x = choose_armor_throw(saving_throws)
+        # Remove the chosen saving throw from the list
+        del saving_throws[saving_throws.index(x)]
+        y = choose_armor_throw(saving_throws)
+        return {
+            'type': 'heavy',
+            'ac_mod': -6,
+            'sv_throws': [x, y]
+        }
+
+    if int(a) == 2:
+        print("You chose Medium!")
+        x = choose_armor_throw(saving_throws)
+        return {
+            'type': 'medium',
+            'ac_mod': -4,
+            'sv_throws': [x]
+        }
+    if int(a) == 3:
+        print("You chose Light!")
+        return {
+            'type': 'light',
+            'ac_mod': -2,
+            'sv_throws': []
+        }
+
+
+def choose_armor_throw(saving_throws):
+    """Choose which saving throw the armor will affect."""
+    for i, value in enumerate(saving_throws, start=1):
+        print('({}) {}'.format(i, value))
+    b = _input('Choose armor penalty (-4):')
+
+    return saving_throws[int(b)-1]
 
 
 def set_xpdom():
     """Input XP and Dominion."""
-    xp = input("How much xp do you have?")
-    dominion = input("How much dominion do you have?")
+    xp = _input("How much xp do you have?")
+    dominion = _input("How much dominion do you have?")
     return xp, dominion
 
 
@@ -238,7 +341,7 @@ def set_level():
     while(test):
         test = False
         try:
-            level = int(input("What is your starting level? "))
+            level = int(_input("What is your starting level? "))
         except ValueError:
             print("Enter a valid integer")
             test = True

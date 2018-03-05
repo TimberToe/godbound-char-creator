@@ -12,21 +12,22 @@ Making a Godbound character creator for fnu!
    - [ ] Calculate word attribute scores?
 	 - [ ] Choose words
  -  [X] Give 2 pp per word, only the 3 first words
- - [ ] Choose start level
+ - [X] Choose start level
  - [ ] Buy Gifts
    - 1 pp per lesser Gift per bound Word or unbound Gift
 	 - 2 pp per greater Gift per bound Word
 	 - 2 pp per lesser Gift per unbound Word
 	 - 3 pp per new bound Word
  - [X] Calculate saving throws
-   - [ ] Take armour into consideration
+   - [X] Take armor into consideration
+   - [ ] Take armor into consideration Floryd style?
  - Weapons
    - [ ] Calculate weapon damage
-	 - [ ] Calculate weapon attribute modifier
+   - [ ] Calculate weapon attribute modifier
  - [ ] Choose Fray die
- - Armour
+ - [X] AC
    - [X] Calculate AC original style
-	 - [X] Calculate AC Floryd style
+   - [X] Calculate AC Floryd style
  - [X] Calculate max Hitpoints
  - [X] Calculate Level from XP and Dominion
  - [ ] Limit Influence
