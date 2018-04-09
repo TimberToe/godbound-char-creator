@@ -68,7 +68,7 @@ words = [
     {
         'name': 'Earth',
         "description": "This word is cooool!",
-        "effect?": "set Con or Str to 18/16",
+        "effect": "set Con or Str to 18/16",  # How to use?
         "gifts": {
             "lesser": [
                 {
